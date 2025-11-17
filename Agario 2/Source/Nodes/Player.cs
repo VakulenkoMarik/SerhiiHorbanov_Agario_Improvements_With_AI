@@ -38,7 +38,18 @@ public class Player : Node, IUpdatable
         }
     }
     
-    public Camera DraggedCamera { get; set; }
+    private Camera _draggedCamera;
+    private Vector2f? _baseCameraSize;
+    public Camera DraggedCamera
+    {
+        get => _draggedCamera;
+        set
+        {
+            _draggedCamera = value;
+            if (value != null)
+                _baseCameraSize = value.Size; // remember initial camera size to scale from
+        }
+    }
 
     public float MaxSpeed
     {
@@ -127,6 +138,9 @@ public class Player : Node, IUpdatable
         (randomPlayer.Body, Body) = (Body, randomPlayer.Body);
     }
     
+    private const float MaxZoomOutMultiplier = 4f; // limit how far we can zoom out automatically
+    private const float ZoomLerpSpeed = 3f;        // how fast camera zoom adapts
+
     private void TryDragCamera(FrameTiming time)
     {
         if (DraggedCamera == null)
@@ -134,6 +148,17 @@ public class Player : Node, IUpdatable
 
         float interpolation = time.DeltaSeconds * 5;
         DraggedCamera.Position = DraggedCamera.Position.Lerp(Position, interpolation);
+
+        // Adjust camera zoom based on player size so big player doesn't fill the whole screen
+        if (_baseCameraSize.HasValue)
+        {
+            float radiusRatio = Radius / PlayerConfigs.StartingRadius;
+            float targetMultiplier = float.Clamp(radiusRatio, 1f, MaxZoomOutMultiplier);
+
+            Vector2f targetSize = _baseCameraSize.Value * targetMultiplier;
+            float zoomLerp = time.DeltaSeconds * ZoomLerpSpeed;
+            DraggedCamera.Size = DraggedCamera.Size.Lerp(targetSize, zoomLerp);
+        }
     }
     
     private void DoMovement(FrameTiming time)
