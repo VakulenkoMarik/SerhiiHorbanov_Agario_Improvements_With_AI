@@ -47,7 +47,7 @@ public class Player : Node, IUpdatable
         {
             _draggedCamera = value;
             if (value != null)
-                _baseCameraSize = value.Size; // remember initial camera size to scale from
+                _baseCameraSize = value.Size;
         }
     }
 
@@ -138,8 +138,11 @@ public class Player : Node, IUpdatable
         (randomPlayer.Body, Body) = (Body, randomPlayer.Body);
     }
     
-    private const float MaxZoomOutMultiplier = 4f; // limit how far we can zoom out automatically
-    private const float ZoomLerpSpeed = 3f;        // how fast camera zoom adapts
+    private const float MaxZoomOutMultiplier = 3.2f;
+    private const float ZoomLerpSpeed = 2f;
+    private const float ZoomStartThreshold = 1.2f;
+    private const float ZoomSensitivityExponent = 1.6f;
+    private const float HighEndLerpSlowdown = 0.5f;
 
     private void TryDragCamera(FrameTiming time)
     {
@@ -148,15 +151,27 @@ public class Player : Node, IUpdatable
 
         float interpolation = time.DeltaSeconds * 5;
         DraggedCamera.Position = DraggedCamera.Position.Lerp(Position, interpolation);
-
-        // Adjust camera zoom based on player size so big player doesn't fill the whole screen
+        
         if (_baseCameraSize.HasValue)
         {
             float radiusRatio = Radius / PlayerConfigs.StartingRadius;
-            float targetMultiplier = float.Clamp(radiusRatio, 1f, MaxZoomOutMultiplier);
+            
+            float normalized = 0f;
+            if (radiusRatio > ZoomStartThreshold)
+            {
+                float denom = MaxZoomOutMultiplier - ZoomStartThreshold;
+                if (denom > 0)
+                    normalized = float.Clamp((radiusRatio - ZoomStartThreshold) / denom, 0f, 1f);
+            }
+            
+            float curved = normalized * normalized * (3f - 2f * normalized);
+
+            float targetMultiplier = 1f + curved * (MaxZoomOutMultiplier - 1f);
 
             Vector2f targetSize = _baseCameraSize.Value * targetMultiplier;
-            float zoomLerp = time.DeltaSeconds * ZoomLerpSpeed;
+            float baseLerp = time.DeltaSeconds * ZoomLerpSpeed;
+            float slowdown = 1f - HighEndLerpSlowdown * normalized;
+            float zoomLerp = baseLerp * float.Max(0.2f, slowdown);
             DraggedCamera.Size = DraggedCamera.Size.Lerp(targetSize, zoomLerp);
         }
     }
