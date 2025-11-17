@@ -67,6 +67,9 @@ public class Player : Node, IUpdatable
         set => _body.Radius = value;
     }
     
+    public float CurrentRadius
+        => _body.Radius;
+    
     public Vector2f Position
     {
         get => _body.Position;
