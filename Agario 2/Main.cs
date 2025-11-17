@@ -1,0 +1,1 @@
+﻿new Agario_2.Agario().Run();

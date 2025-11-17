@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Agario_2</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <!-- Ensure correct architecture for native SFML binaries -->
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MyEngine\MyEngine.csproj" />
+    </ItemGroup>
+
+    <!-- Reference SFML.Net directly so native CSFML DLLs are copied to the executable output -->
+    <ItemGroup>
+      <PackageReference Include="SFML.Net" Version="2.6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Resources\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\" />
+    </ItemGroup>
+
+</Project>

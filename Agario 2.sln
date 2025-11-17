@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agario 2", "Agario 2\Agario 2.csproj", "{10DCAB47-489E-4008-A4B9-B14768C815E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyEngine", "MyEngine\MyEngine.csproj", "{81DA4560-86A6-4ED3-B48E-0653CBF94EB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10DCAB47-489E-4008-A4B9-B14768C815E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10DCAB47-489E-4008-A4B9-B14768C815E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10DCAB47-489E-4008-A4B9-B14768C815E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10DCAB47-489E-4008-A4B9-B14768C815E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81DA4560-86A6-4ED3-B48E-0653CBF94EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81DA4560-86A6-4ED3-B48E-0653CBF94EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81DA4560-86A6-4ED3-B48E-0653CBF94EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81DA4560-86A6-4ED3-B48E-0653CBF94EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
